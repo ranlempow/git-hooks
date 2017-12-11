@@ -57,10 +57,13 @@ function list_hooks_in_dir
 	Lopt=-L
     fi
 
+    if [ -z "$MSYSTEM" ]; then
+        not_msys=true
+    fi
     find ${Lopt} "${path}/" \
 	 -mindepth ${level} \
 	 -maxdepth ${level} \
-	 \( -perm -100 -o -perm -010 -o -perm -001 \) \
+	 ${not_msys:+\( -perm -100 -o -perm -010 -o -perm -001 \)} \
 	 -type f 2>/dev/null \
 	| grep -v "^.$" | sort
 }
